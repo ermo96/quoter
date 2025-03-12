@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Merchant Info Quoter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    thead {
+      background-color: #007BFF;
+      color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      vertical-align: middle;
+    }
+    th {
+      font-weight: 600;
+      text-align: left;
+    }
+    td input {
+      width: 90%;
+      box-sizing: border-box;
+      padding: 5px;
+      font-size: 1em;
+    }
+    /* Read-only cells for calculated costs */
+    .readonly-cell {
+      background-color: #eee;
+      text-align: right;
+      font-weight: bold;
+      padding-right: 10px;
+    }
+    .center {
+      text-align: center;
+    }
+    .calculate-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    .calculate-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Merchant Info Quoter</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Current Setup</th>
+        <th>Appstar</th>
+        <th class="center">Savings</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- ================== VISA ================== -->
+      <tr>
+        <td><strong>Visa Volume</strong></td>
+        <td><input type="number" id="visaVolumeCurrent" value="580" step="0.01"></td>
+        <td><input type="number" id="visaVolumeAppstar" value="560" step="0.01"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Visa % Rate</td>
+        <td><input type="number" id="visaRateCurrent" value="0.02" step="0.0001"></td>
+        <td><input type="number" id="visaRateAppstar" value="0.018" step="0.0001"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Visa Transactions</td>
+        <td><input type="number" id="visaTransCurrent" value="100" step="1"></td>
+        <td><input type="number" id="visaTransAppstar" value="98" step="1"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Visa Cost per Swipe</td>
+        <td><input type="number" id="visaSwipeCurrent" value="0.26" step="0.01"></td>
+        <td><input type="number" id="visaSwipeAppstar" value="0.21" step="0.01"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Visa Cost</strong></td>
+        <!-- Read-only cells for the cost calculations -->
+        <td id="visaCostCurrent" class="readonly-cell">0.00</td>
+        <td id="visaCostAppstar" class="readonly-cell">0.00</td>
+        <td id="visaCostSavings" class="center">0%</td>
+      </tr>
+
+      <!-- ================== MASTERCARD ================== -->
+      <tr>
+        <td><strong>Mastercard Volume</strong></td>
+        <td><input type="number" id="mcVolumeCurrent" value="8451" step="0.01"></td>
+        <td><input type="number" id="mcVolumeAppstar" value="8405" step="0.01"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Mastercard % Rate</td>
+        <td><input type="number" id="mcRateCurrent" value="0.02" step="0.0001"></td>
+        <td><input type="number" id="mcRateAppstar" value="0.019" step="0.0001"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Mastercard Transactions</td>
+        <td><input type="number" id="mcTransCurrent" value="120" step="1"></td>
+        <td><input type="number" id="mcTransAppstar" value="118" step="1"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Mastercard Cost per Swipe</td>
+        <td><input type="number" id="mcSwipeCurrent" value="0.25" step="0.01"></td>
+        <td><input type="number" id="mcSwipeAppstar" value="0.20" step="0.01"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Mastercard Cost</strong></td>
+        <td id="mcCostCurrent" class="readonly-cell">0.00</td>
+        <td id="mcCostAppstar" class="readonly-cell">0.00</td>
+        <td id="mcCostSavings" class="center">0%</td>
+      </tr>
+
+      <!-- ================== AMEX ================== -->
+      <tr>
+        <td><strong>Amex Volume</strong></td>
+        <td><input type="number" id="amexVolumeCurrent" value="2000" step="0.01"></td>
+        <td><input type="number" id="amexVolumeAppstar" value="1900" step="0.01"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Amex % Rate</td>
+        <td><input type="number" id="amexRateCurrent" value="0.03" step="0.0001"></td>
+        <td><input type="number" id="amexRateAppstar" value="0.028" step="0.0001"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Amex Transactions</td>
+        <td><input type="number" id="amexTransCurrent" value="80" step="1"></td>
+        <td><input type="number" id="amexTransAppstar" value="75" step="1"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Amex Cost per Swipe</td>
+        <td><input type="number" id="amexSwipeCurrent" value="0.30" step="0.01"></td>
+        <td><input type="number" id="amexSwipeAppstar" value="0.25" step="0.01"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Amex Cost</strong></td>
+        <td id="amexCostCurrent" class="readonly-cell">0.00</td>
+        <td id="amexCostAppstar" class="readonly-cell">0.00</td>
+        <td id="amexCostSavings" class="center">0%</td>
+      </tr>
+
+      <!-- ================== TOTAL TRANSACTION FEES ================== -->
+      <tr>
+        <td><strong>Total Transaction Fees</strong></td>
+        <td id="totalFeesCurrent" class="readonly-cell">0.00</td>
+        <td id="totalFeesAppstar" class="readonly-cell">0.00</td>
+        <td id="totalFeesSavings" class="center">0%</td>
+      </tr>
+
+      <!-- ================== MONTHLY FEES ================== -->
+      <tr>
+        <td>Monthly Fees</td>
+        <td><input type="number" id="monthlyFeesCurrent" value="50" step="0.01"></td>
+        <td><input type="number" id="monthlyFeesAppstar" value="40" step="0.01"></td>
+        <td></td>
+      </tr>
+
+      <!-- ================== TOTAL COST ================== -->
+      <tr>
+        <td><strong>Total Cost</strong></td>
+        <td id="totalCostCurrent" class="readonly-cell">0.00</td>
+        <td id="totalCostAppstar" class="readonly-cell">0.00</td>
+        <td id="totalCostSavings" class="center">0%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button class="calculate-btn" onclick="calculateAll()">Calculate Savings</button>
+
+  <script>
+    // Reusable function to compute cost for a card:
+    // cost = (volume * rate) + (transactions * costPerSwipe)
+    function computeCardCost(volumeId, rateId, transId, swipeId, costCellId) {
+      const volume = parseFloat(document.getElementById(volumeId).value) || 0;
+      const rate = parseFloat(document.getElementById(rateId).value) || 0;
+      const transactions = parseFloat(document.getElementById(transId).value) || 0;
+      const swipeCost = parseFloat(document.getElementById(swipeId).value) || 0;
+
+      const cost = (volume * rate) + (transactions * swipeCost);
+
+      // Update the read-only cell
+      document.getElementById(costCellId).textContent = cost.toFixed(2);
+
+      return cost;
+    }
+
+    // Calculate savings as a percentage
+    // savings% = ((current - appstar) / current) * 100
+    function calculateSavingsPercent(currentVal, appstarVal) {
+      if (currentVal === 0) return 0;
+      return ((currentVal - appstarVal) / currentVal) * 100;
+    }
+
+    function calculateAll() {
+      // 1) Visa
+      const visaCostCurrent = computeCardCost(
+        'visaVolumeCurrent', 'visaRateCurrent',
+        'visaTransCurrent', 'visaSwipeCurrent',
+        'visaCostCurrent'
+      );
+      const visaCostAppstar = computeCardCost(
+        'visaVolumeAppstar', 'visaRateAppstar',
+        'visaTransAppstar', 'visaSwipeAppstar',
+        'visaCostAppstar'
+      );
+      const visaCostDiff = calculateSavingsPercent(visaCostCurrent, visaCostAppstar);
+      document.getElementById('visaCostSavings').textContent = visaCostDiff.toFixed(2) + '%';
+
+      // 2) Mastercard
+      const mcCostCurrent = computeCardCost(
+        'mcVolumeCurrent', 'mcRateCurrent',
+        'mcTransCurrent', 'mcSwipeCurrent',
+        'mcCostCurrent'
+      );
+      const mcCostAppstar = computeCardCost(
+        'mcVolumeAppstar', 'mcRateAppstar',
+        'mcTransAppstar', 'mcSwipeAppstar',
+        'mcCostAppstar'
+      );
+      const mcCostDiff = calculateSavingsPercent(mcCostCurrent, mcCostAppstar);
+      document.getElementById('mcCostSavings').textContent = mcCostDiff.toFixed(2) + '%';
+
+      // 3) Amex
+      const amexCostCurrent = computeCardCost(
+        'amexVolumeCurrent', 'amexRateCurrent',
+        'amexTransCurrent', 'amexSwipeCurrent',
+        'amexCostCurrent'
+      );
+      const amexCostAppstar = computeCardCost(
+        'amexVolumeAppstar', 'amexRateAppstar',
+        'amexTransAppstar', 'amexSwipeAppstar',
+        'amexCostAppstar'
+      );
+      const amexCostDiff = calculateSavingsPercent(amexCostCurrent, amexCostAppstar);
+      document.getElementById('amexCostSavings').textContent = amexCostDiff.toFixed(2) + '%';
+
+      // 4) Total Transaction Fees = sum of all card costs
+      const totalFeesCurrent = visaCostCurrent + mcCostCurrent + amexCostCurrent;
+      const totalFeesAppstar = visaCostAppstar + mcCostAppstar + amexCostAppstar;
+      document.getElementById('totalFeesCurrent').textContent = totalFeesCurrent.toFixed(2);
+      document.getElementById('totalFeesAppstar').textContent = totalFeesAppstar.toFixed(2);
+
+      const totalFeesDiff = calculateSavingsPercent(totalFeesCurrent, totalFeesAppstar);
+      document.getElementById('totalFeesSavings').textContent = totalFeesDiff.toFixed(2) + '%';
+
+      // 5) Monthly Fees (input)
+      const monthlyFeesCurrent = parseFloat(document.getElementById('monthlyFeesCurrent').value) || 0;
+      const monthlyFeesAppstar = parseFloat(document.getElementById('monthlyFeesAppstar').value) || 0;
+
+      // 6) Total Cost = Total Transaction Fees + Monthly Fees
+      const totalCostCurrent = totalFeesCurrent + monthlyFeesCurrent;
+      const totalCostAppstar = totalFeesAppstar + monthlyFeesAppstar;
+      document.getElementById('totalCostCurrent').textContent = totalCostCurrent.toFixed(2);
+      document.getElementById('totalCostAppstar').textContent = totalCostAppstar.toFixed(2);
+
+      const totalCostDiff = calculateSavingsPercent(totalCostCurrent, totalCostAppstar);
+      document.getElementById('totalCostSavings').textContent = totalCostDiff.toFixed(2) + '%';
+    }
+  </script>
+</body>
+</html>
